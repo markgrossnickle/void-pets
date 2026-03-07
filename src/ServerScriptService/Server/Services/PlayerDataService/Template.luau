@@ -4,13 +4,52 @@
 	@server
 ]=]
 
-export type PlayerData = {
-	-- Currencies
-	Coins: number,
-	Gems: number,
+export type PetData = {
+	Type: string,
+	Rarity: string,
+	Level: number,
+	Locked: boolean,
+	ObtainedAt: number,
+	TradeLockUntil: number,
+}
 
-	-- Shop / Inventory
-	Inventory: { [string]: number },
+export type TradeRecord = {
+	Timestamp: number,
+	PartnerId: number,
+	PartnerName: string,
+	Given: { string },
+	Received: { string },
+}
+
+export type PlayerData = {
+	-- Void Energy
+	VoidEnergy: number,
+	TotalVoidEnergyEarned: number,
+
+	-- Pets
+	Pets: { PetData },
+	EquippedPetSlots: { number },
+
+	-- Zones
+	UnlockedZones: { [string]: boolean },
+	CurrentZone: number,
+
+	-- Rebirth
+	RebirthCount: number,
+
+	-- Upgrades
+	HasAutoClick: boolean,
+
+	-- Statistics
+	TotalClicks: number,
+	TotalHatches: number,
+	RarestPetRarity: string,
+
+	-- Trading
+	TradeHistory: { TradeRecord },
+
+	-- Monetization: processed receipt IDs to prevent double-processing
+	ProcessedReceipts: { [string]: boolean },
 
 	-- Daily Login Rewards
 	LoginStreak: number,
@@ -22,16 +61,29 @@ export type PlayerData = {
 	TotalPlayTime: number,
 	SessionCount: number,
 	LastSessionStart: number,
-
-	-- Monetization: processed receipt IDs to prevent double-processing
-	ProcessedReceipts: { [string]: boolean },
 }
 
 local playerDataTemplate: PlayerData = {
-	Coins = 0,
-	Gems = 0,
+	VoidEnergy = 0,
+	TotalVoidEnergyEarned = 0,
 
-	Inventory = {},
+	Pets = {},
+	EquippedPetSlots = {},
+
+	UnlockedZones = { ["1"] = true },
+	CurrentZone = 1,
+
+	RebirthCount = 0,
+
+	HasAutoClick = false,
+
+	TotalClicks = 0,
+	TotalHatches = 0,
+	RarestPetRarity = "Common",
+
+	TradeHistory = {},
+
+	ProcessedReceipts = {},
 
 	LoginStreak = 0,
 	LastLoginDate = "",
@@ -41,8 +93,6 @@ local playerDataTemplate: PlayerData = {
 	TotalPlayTime = 0,
 	SessionCount = 0,
 	LastSessionStart = 0,
-
-	ProcessedReceipts = {},
 }
 
 return playerDataTemplate

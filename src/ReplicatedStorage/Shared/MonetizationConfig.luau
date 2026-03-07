@@ -27,35 +27,35 @@ export type DailyReward = {
 -- Map pass names to GamePass IDs. Update IDs for your game.
 local GamePasses: { [string]: GamePassEntry } = {
 	VIP = { Id = 0, Name = "VIP" },
-	DoubleCoins = { Id = 0, Name = "Double Coins" },
-	AutoFarm = { Id = 0, Name = "Auto Farm" },
+	ExtraEquip = { Id = 0, Name = "Extra Equip Slots" },
+	AutoHatchPlus = { Id = 0, Name = "Auto-Hatch Plus" },
+	Lucky = { Id = 0, Name = "Lucky" },
+	ExclusiveEgg = { Id = 0, Name = "Exclusive Egg Access" },
 }
 
 -- Map product names to Developer Product IDs + handler function names.
--- Handler is the name of a method on MonetizationService that processes the receipt.
 local DevProducts: { [string]: DevProductEntry } = {
-	["100Coins"] = { Id = 0, Name = "100 Coins", Handler = "_handleCoinProduct" },
-	["500Coins"] = { Id = 0, Name = "500 Coins", Handler = "_handleCoinProduct" },
-	["1000Coins"] = { Id = 0, Name = "1000 Coins", Handler = "_handleCoinProduct" },
-	VIPBoost = { Id = 0, Name = "VIP Boost (1hr)", Handler = "_handleBoostProduct" },
+	["1000VE"] = { Id = 0, Name = "1,000 Void Energy", Handler = "_handleVEProduct" },
+	["10000VE"] = { Id = 0, Name = "10,000 Void Energy", Handler = "_handleVEProduct" },
+	["100000VE"] = { Id = 0, Name = "100,000 Void Energy", Handler = "_handleVEProduct" },
 }
 
--- Coin amounts for dev products (used by _handleCoinProduct)
-local DevProductCoinAmounts: { [string]: number } = {
-	["100Coins"] = 100,
-	["500Coins"] = 500,
-	["1000Coins"] = 1000,
+-- VE amounts for dev products
+local DevProductVEAmounts: { [string]: number } = {
+	["1000VE"] = 1000,
+	["10000VE"] = 10000,
+	["100000VE"] = 100000,
 }
 
 -- Daily login rewards (7-day cycle, repeats)
 local DailyRewards: { DailyReward } = {
-	{ Type = "Currency", Currency = "Coins", Amount = 50, Description = "50 Coins" },
-	{ Type = "Currency", Currency = "Coins", Amount = 75, Description = "75 Coins" },
-	{ Type = "Currency", Currency = "Coins", Amount = 100, Description = "100 Coins" },
-	{ Type = "Currency", Currency = "Coins", Amount = 150, Description = "150 Coins" },
-	{ Type = "Currency", Currency = "Coins", Amount = 200, Description = "200 Coins" },
-	{ Type = "Currency", Currency = "Coins", Amount = 300, Description = "300 Coins" },
-	{ Type = "Currency", Currency = "Gems", Amount = 10, Description = "10 Gems" },
+	{ Type = "Currency", Currency = "VoidEnergy", Amount = 500, Description = "500 Void Energy" },
+	{ Type = "Currency", Currency = "VoidEnergy", Amount = 1000, Description = "1,000 Void Energy" },
+	{ Type = "Currency", Currency = "VoidEnergy", Amount = 2000, Description = "2,000 Void Energy" },
+	{ Type = "Currency", Currency = "VoidEnergy", Amount = 3000, Description = "3,000 Void Energy" },
+	{ Type = "Currency", Currency = "VoidEnergy", Amount = 5000, Description = "5,000 Void Energy" },
+	{ Type = "Currency", Currency = "VoidEnergy", Amount = 8000, Description = "8,000 Void Energy" },
+	{ Type = "Currency", Currency = "VoidEnergy", Amount = 15000, Description = "15,000 Void Energy" },
 }
 
 -- Premium membership multiplier for currency earnings
@@ -64,7 +64,7 @@ local PremiumMultiplier = 1.5
 return {
 	GamePasses = GamePasses,
 	DevProducts = DevProducts,
-	DevProductCoinAmounts = DevProductCoinAmounts,
+	DevProductVEAmounts = DevProductVEAmounts,
 	DailyRewards = DailyRewards,
 	PremiumMultiplier = PremiumMultiplier,
 }

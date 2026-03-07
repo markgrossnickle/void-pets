@@ -110,29 +110,23 @@ function MonetizationService:PromptProduct(player: Player, productName: string)
 	MarketplaceService:PromptProductPurchase(player, entry.Id)
 end
 
-function MonetizationService:_handleCoinProduct(player: Player, productName: string): boolean
-	local amount = MonetizationConfig.DevProductCoinAmounts[productName]
+function MonetizationService:_handleVEProduct(player: Player, productName: string): boolean
+	local amount = MonetizationConfig.DevProductVEAmounts[productName]
 	if not amount then
-		warn(`MonetizationService: No coin amount for product "{productName}"`)
+		warn(`MonetizationService: No VE amount for product "{productName}"`)
 		return false
 	end
-	-- Apply premium multiplier
 	if self:IsPremium(player) then
 		amount = math.floor(amount * MonetizationConfig.PremiumMultiplier)
 	end
-	local ok, currentCoins = PlayerDataService:Read(player, { "Coins" }):await()
+	local ok, currentVE = PlayerDataService:Read(player, { "VoidEnergy" }):await()
 	if not ok then
 		return false
 	end
-	PlayerDataService:Write(player, { "Coins" }, (currentCoins or 0) + amount)
+	PlayerDataService:Write(player, { "VoidEnergy" }, (currentVE or 0) + amount)
 	if AnalyticsService then
-		AnalyticsService:TrackEconomy(player, "Coins", amount, "Source", `DevProduct_{productName}`)
+		AnalyticsService:TrackEconomy(player, "VoidEnergy", amount, "Source", `DevProduct_{productName}`)
 	end
-	return true
-end
-
-function MonetizationService:_handleBoostProduct(_player: Player, _productName: string): boolean
-	-- Override in your game to grant the boost effect
 	return true
 end
 
