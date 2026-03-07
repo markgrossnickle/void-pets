@@ -107,7 +107,9 @@ function RebirthService:DoRebirth(player: Player): (boolean, string?)
 	self.PlayerRebirthed:Fire(player, newRebirthCount)
 	self.Client.PlayerRebirthed:Fire(player, newRebirthCount, newMultiplier)
 
-	print(`{player.DisplayName} rebirthed! Count: {newRebirthCount}, Multiplier: {string.format("%.1f", newMultiplier)}x`)
+	print(
+		`{player.DisplayName} rebirthed! Count: {newRebirthCount}, Multiplier: {string.format("%.1f", newMultiplier)}x`
+	)
 
 	return true, nil
 end

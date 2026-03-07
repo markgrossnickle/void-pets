@@ -2,7 +2,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
-local Signal = require(ReplicatedStorage.Packages.Signal)
 
 local VoidPetsConfig = require(ReplicatedStorage.Shared.VoidPetsConfig)
 

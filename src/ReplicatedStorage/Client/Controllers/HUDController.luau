@@ -18,11 +18,8 @@ local HUDController = Knit.CreateController({
 	Name = "HUDController",
 })
 
-local ClickService
 local RebirthService
 local PetService
-local ZoneService
-local EggService
 
 local screenGui: ScreenGui
 local veLabel: TextLabel
@@ -422,9 +419,7 @@ local function refreshInventory()
 		local equipBtn = Instance.new("TextButton")
 		equipBtn.Size = UDim2.fromScale(0.9, 0.2)
 		equipBtn.Position = UDim2.fromScale(0.05, 0.7)
-		equipBtn.BackgroundColor3 = if equippedSet[i]
-			then Color3.fromRGB(150, 40, 40)
-			else Color3.fromRGB(40, 100, 40)
+		equipBtn.BackgroundColor3 = if equippedSet[i] then Color3.fromRGB(150, 40, 40) else Color3.fromRGB(40, 100, 40)
 		equipBtn.Text = if equippedSet[i] then "Unequip" else "Equip"
 		equipBtn.TextColor3 = Color3.new(1, 1, 1)
 		equipBtn.Font = Enum.Font.GothamBold
@@ -539,11 +534,8 @@ end
 -- ============================================================================
 
 function HUDController:KnitInit()
-	ClickService = Knit.GetService("ClickService")
 	RebirthService = Knit.GetService("RebirthService")
 	PetService = Knit.GetService("PetService")
-	ZoneService = Knit.GetService("ZoneService")
-	EggService = Knit.GetService("EggService")
 end
 
 function HUDController:KnitStart()
@@ -571,7 +563,7 @@ function HUDController:KnitStart()
 	end)
 
 	-- Rebirth notification
-	RebirthService.PlayerRebirthed:Connect(function(newCount, newMult)
+	RebirthService.PlayerRebirthed:Connect(function(_newCount, _newMult)
 		-- Flash screen gold
 		local flash = Instance.new("Frame")
 		flash.Size = UDim2.fromScale(1, 1)

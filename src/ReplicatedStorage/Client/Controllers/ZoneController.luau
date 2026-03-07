@@ -7,8 +7,6 @@ local TweenService = game:GetService("TweenService")
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local VoidPetsConfig = require(ReplicatedStorage.Shared.VoidPetsConfig)
-local PlatformUtil = require(ReplicatedStorage.Shared.PlatformUtil)
-
 local LocalPlayer = Players.LocalPlayer
 
 --[=[
@@ -91,9 +89,7 @@ local function setupPortalTouchDetection()
 					-- Try to unlock
 					task.spawn(function()
 						local ok, err = ZoneService:UnlockZone(targetZone):await()
-						if ok then
-							-- Will be handled by signal
-						else
+						if not ok then
 							warn(`Cannot unlock zone: {err}`)
 						end
 					end)

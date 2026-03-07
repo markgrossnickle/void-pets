@@ -6,8 +6,6 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local Trove = require(ReplicatedStorage.Packages.Trove)
 
 local VoidPetsConfig = require(ReplicatedStorage.Shared.VoidPetsConfig)
-local PlatformUtil = require(ReplicatedStorage.Shared.PlatformUtil)
-
 --[=[
 	@class EggController
 	Egg pedestals, hatch animation, pet reveal on the client.
@@ -130,12 +128,10 @@ local function playHatchAnimation(eggModel: Model, rarity: string, callback: () 
 		burst.Transparency = 0.3
 		burst.Parent = workspace
 
-		TweenService
-			:Create(burst, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-				Size = Vector3.new(8, 8, 8),
-				Transparency = 1,
-			})
-			:Play()
+		TweenService:Create(burst, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+			Size = Vector3.new(8, 8, 8),
+			Transparency = 1,
+		}):Play()
 
 		task.delay(0.6, function()
 			burst:Destroy()

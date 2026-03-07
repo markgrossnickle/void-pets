@@ -30,7 +30,7 @@ local orbitOffset = 0
 -- Pet Visual Creation
 -- ============================================================================
 
-local function createPetModel(petData: any, index: number): Model
+local function createPetModel(petData: any, _index: number): Model
 	local petDef = VoidPetsConfig.Pets[petData.Type]
 	local rarityInfo = VoidPetsConfig.Rarities[petData.Rarity]
 	if not petDef or not rarityInfo then

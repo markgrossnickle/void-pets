@@ -373,7 +373,11 @@ function PetService:InitiateTrade(
 	return true, nil
 end
 
-function PetService:_fixEquippedAfterRemoval(equipped: { number }, removedIndices: { number }, _petCountBefore: number): { number }
+function PetService:_fixEquippedAfterRemoval(
+	equipped: { number },
+	removedIndices: { number },
+	_petCountBefore: number
+): { number }
 	-- removedIndices are sorted descending
 	local newEquipped: { number } = {}
 	for _, eqIdx in equipped do
@@ -395,7 +399,13 @@ function PetService:_fixEquippedAfterRemoval(equipped: { number }, removedIndice
 	return newEquipped
 end
 
-function PetService:_addTradeRecord(player: Player, partner: Player, given: { string }, received: { string }, timestamp: number)
+function PetService:_addTradeRecord(
+	player: Player,
+	partner: Player,
+	given: { string },
+	received: { string },
+	timestamp: number
+)
 	local history = PlayerDataService:Read(player, { "TradeHistory" }) or {}
 	table.insert(history, 1, {
 		Timestamp = timestamp,

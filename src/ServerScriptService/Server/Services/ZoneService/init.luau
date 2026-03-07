@@ -227,11 +227,7 @@ function ZoneService:_buildZone(zoneNumber: number): Model
 	ground.Parent = model
 
 	-- Void Crystal (center)
-	local crystal = createCrystal(
-		zoneOffset + Vector3.new(0, 4, 0),
-		zoneDef.AccentColor,
-		Vector3.new(4, 6, 4)
-	)
+	local crystal = createCrystal(zoneOffset + Vector3.new(0, 4, 0), zoneDef.AccentColor, Vector3.new(4, 6, 4))
 	crystal.Parent = model
 
 	-- Zone label
@@ -275,12 +271,14 @@ function ZoneService:_buildZone(zoneNumber: number): Model
 	end
 
 	-- Decorative accent parts (4 corner pillars)
-	for _, corner in {
-		Vector3.new(-25, 0, -25),
-		Vector3.new(25, 0, -25),
-		Vector3.new(-25, 0, 25),
-		Vector3.new(25, 0, 25),
-	} do
+	for _, corner in
+		{
+			Vector3.new(-25, 0, -25),
+			Vector3.new(25, 0, -25),
+			Vector3.new(-25, 0, 25),
+			Vector3.new(25, 0, 25),
+		}
+	do
 		local pillar = Instance.new("Part")
 		pillar.Anchored = true
 		pillar.Size = Vector3.new(2, 8, 2)

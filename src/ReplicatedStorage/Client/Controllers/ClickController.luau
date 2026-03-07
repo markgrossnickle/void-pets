@@ -32,11 +32,7 @@ local lastClickTime = 0
 local function showFloatingText(amount: number, position: Vector3, isCombo: boolean)
 	local bbg = Instance.new("BillboardGui")
 	bbg.Size = UDim2.fromOffset(120, 40)
-	bbg.StudsOffset = Vector3.new(
-		(math.random() - 0.5) * 2,
-		math.random() * 1 + 1,
-		(math.random() - 0.5) * 2
-	)
+	bbg.StudsOffset = Vector3.new((math.random() - 0.5) * 2, math.random() * 1 + 1, (math.random() - 0.5) * 2)
 	bbg.AlwaysOnTop = true
 	bbg.MaxDistance = 50
 
