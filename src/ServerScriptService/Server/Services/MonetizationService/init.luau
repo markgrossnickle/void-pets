@@ -119,11 +119,8 @@ function MonetizationService:_handleVEProduct(player: Player, productName: strin
 	if self:IsPremium(player) then
 		amount = math.floor(amount * MonetizationConfig.PremiumMultiplier)
 	end
-	local ok, currentVE = PlayerDataService:Read(player, { "VoidEnergy" }):await()
-	if not ok then
-		return false
-	end
-	PlayerDataService:Write(player, { "VoidEnergy" }, (currentVE or 0) + amount)
+	local currentVE = PlayerDataService:Read(player, { "VoidEnergy" }) or 0
+	PlayerDataService:Write(player, { "VoidEnergy" }, currentVE + amount)
 	if AnalyticsService then
 		AnalyticsService:TrackEconomy(player, "VoidEnergy", amount, "Source", `DevProduct_{productName}`)
 	end
@@ -141,10 +138,7 @@ function MonetizationService:_processReceipt(receiptInfo: { [string]: any }): En
 	end
 
 	-- Check for duplicate receipt
-	local ok, processedReceipts = PlayerDataService:Read(player, { "ProcessedReceipts" }):await()
-	if not ok then
-		return Enum.ProductPurchaseDecision.NotProcessedYet
-	end
+	local processedReceipts = PlayerDataService:Read(player, { "ProcessedReceipts" })
 	if processedReceipts and processedReceipts[receiptId] then
 		return Enum.ProductPurchaseDecision.PurchaseGranted
 	end
@@ -185,15 +179,9 @@ function MonetizationService:_processLoginReward(player: Player)
 	PlayerDataService:WaitForProfile(player)
 		:andThen(function()
 			local today = os.date("!%Y-%m-%d", os.time())
-			local ok1, lastLoginDate = PlayerDataService:Read(player, { "LastLoginDate" }):await()
-			local ok2, loginStreak = PlayerDataService:Read(player, { "LoginStreak" }):await()
-			local ok3, lastClaimed = PlayerDataService:Read(player, { "LastLoginRewardClaimed" }):await()
-			if not (ok1 and ok2 and ok3) then
-				return
-			end
-
-			lastLoginDate = lastLoginDate or ""
-			loginStreak = loginStreak or 0
+			local lastLoginDate = PlayerDataService:Read(player, { "LastLoginDate" }) or ""
+			local loginStreak = PlayerDataService:Read(player, { "LoginStreak" }) or 0
+			local lastClaimed = PlayerDataService:Read(player, { "LastLoginRewardClaimed" })
 
 			-- Already claimed today
 			if lastLoginDate == today and lastClaimed then
@@ -225,12 +213,8 @@ function MonetizationService:_processLoginReward(player: Player)
 end
 
 function MonetizationService:GetLoginReward(player: Player): { day: number, reward: MonetizationConfig.DailyReward }?
-	local ok1, loginStreak = PlayerDataService:Read(player, { "LoginStreak" }):await()
-	local ok2, lastClaimed = PlayerDataService:Read(player, { "LastLoginRewardClaimed" }):await()
-	if not (ok1 and ok2) then
-		return nil
-	end
-	loginStreak = loginStreak or 0
+	local loginStreak = PlayerDataService:Read(player, { "LoginStreak" }) or 0
+	local lastClaimed = PlayerDataService:Read(player, { "LastLoginRewardClaimed" })
 	if loginStreak == 0 then
 		return nil
 	end
@@ -240,12 +224,12 @@ function MonetizationService:GetLoginReward(player: Player): { day: number, rewa
 end
 
 function MonetizationService:ClaimLoginReward(player: Player): boolean
-	local ok1, lastClaimed = PlayerDataService:Read(player, { "LastLoginRewardClaimed" }):await()
-	if not ok1 or lastClaimed then
+	local lastClaimed = PlayerDataService:Read(player, { "LastLoginRewardClaimed" })
+	if lastClaimed then
 		return false
 	end
-	local ok2, loginStreak = PlayerDataService:Read(player, { "LoginStreak" }):await()
-	if not ok2 or not loginStreak or loginStreak == 0 then
+	local loginStreak = PlayerDataService:Read(player, { "LoginStreak" }) or 0
+	if loginStreak == 0 then
 		return false
 	end
 
@@ -254,9 +238,9 @@ function MonetizationService:ClaimLoginReward(player: Player): boolean
 
 	-- Grant reward
 	if reward.Type == "Currency" and reward.Currency and reward.Amount then
-		local okRead, current = PlayerDataService:Read(player, { reward.Currency }):await()
-		if okRead then
-			PlayerDataService:Write(player, { reward.Currency }, (current or 0) + reward.Amount)
+		local current = PlayerDataService:Read(player, { reward.Currency }) or 0
+		do
+			PlayerDataService:Write(player, { reward.Currency }, current + reward.Amount)
 			if AnalyticsService then
 				AnalyticsService:TrackEconomy(
 					player,
