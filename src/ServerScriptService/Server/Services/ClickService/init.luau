@@ -122,6 +122,7 @@ function ClickService:PurchaseAutoClick(player: Player): boolean
 
 	PlayerDataService:Write(player, { "VoidEnergy" }, currentVE - cost)
 	PlayerDataService:Write(player, { "HasAutoClick" }, true)
+	self:_startAutoClick(player)
 	return true
 end
 
@@ -235,7 +236,7 @@ function ClickService:KnitStart()
 	end)
 
 	-- Start auto-click for players who already have it
-	for _, player in Players:GetPlayers() do
+	local function initAutoClickForPlayer(player: Player)
 		task.spawn(function()
 			PlayerDataService:WaitForProfile(player)
 				:andThen(function()
@@ -247,6 +248,12 @@ function ClickService:KnitStart()
 				:catch(function() end)
 		end)
 	end
+
+	for _, player in Players:GetPlayers() do
+		initAutoClickForPlayer(player)
+	end
+
+	Players.PlayerAdded:Connect(initAutoClickForPlayer)
 end
 
 return ClickService
