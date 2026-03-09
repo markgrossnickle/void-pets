@@ -306,7 +306,7 @@ function ZoneService:_buildZone(zoneNumber: number): Model
 	spawn.Anchored = true
 	spawn.Size = Vector3.new(6, 1, 6)
 	spawn.Position = zoneOffset + Vector3.new(0, 0.5, 15)
-	spawn.Transparency = 0.8
+	spawn.Transparency = 1
 	spawn.CanCollide = true
 	spawn.Neutral = true
 	spawn.Parent = model
@@ -316,6 +316,16 @@ function ZoneService:_buildZone(zoneNumber: number): Model
 end
 
 function ZoneService:_buildAllZones()
+	-- Remove default Baseplate and SpawnLocation to prevent Z-fighting
+	local baseplate = workspace:FindFirstChild("Baseplate")
+	if baseplate then
+		baseplate:Destroy()
+	end
+	local defaultSpawn = workspace:FindFirstChild("SpawnLocation")
+	if defaultSpawn then
+		defaultSpawn:Destroy()
+	end
+
 	for zoneNumber = 1, 6 do
 		zoneModels[zoneNumber] = self:_buildZone(zoneNumber)
 	end
